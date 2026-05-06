@@ -11,6 +11,7 @@ from agentscope.model import OpenAIChatModel
 from agentscope.tool import (
     Toolkit
 )
+from agentscope.tool import ToolResponse
 from agentscope.message import Msg
 
 load_dotenv()
@@ -46,7 +47,7 @@ async def get_agent(agent: AgentCreator):
         IMPORTANT: Never invent or estimate cryptocurrency prices. Only use data returned by the tool.""",
         model = OpenAIChatModel(
             api_key = os.environ.get("YOUR_PROVIDER_APIKEY"),
-            model_name = "deepseek-v4-flash",
+            model_name = "deepseek-chat",
             client_args={
                 "base_url": "https://api.deepseek.com"
                 },
@@ -55,7 +56,7 @@ async def get_agent(agent: AgentCreator):
             multimodality = False
         ),
         formatter = OpenAIChatFormatter(),
-        toolkit=toolkit
+        toolkit = toolkit
     )
     
     response = await cryptopeper(msg)
