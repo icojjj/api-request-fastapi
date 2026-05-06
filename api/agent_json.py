@@ -5,12 +5,13 @@ from dotenv import load_dotenv
 import os
 from tools.get_crypto_price import get_crypto_price
 from agentscope.agent import ReActAgent, UserAgent
-from agentscope.formatter import DashScopeChatFormatter
+from agentscope.formatter import OpenAIChatFormatter
 from agentscope.memory import InMemoryMemory
 from agentscope.model import OpenAIChatModel
 from agentscope.tool import (
     Toolkit
 )
+from agentscope.message import Msg
 
 load_dotenv()
 
@@ -30,7 +31,7 @@ async def get_agent(agent: AgentCreator):
     
     toolkit.register_tool_function(get_crypto_price)
     
-    msg = agent.msg
+    msg = Msg(name="User", content=agent.msg, role="user")
     
     cryptopeper = ReActAgent(
         name = "CryptoPeper",
@@ -46,11 +47,14 @@ async def get_agent(agent: AgentCreator):
         model = OpenAIChatModel(
             api_key = os.environ.get("YOUR_PROVIDER_APIKEY"),
             model_name = "deepseek-v4-flash",
+            client_args={
+                "base_url": "https://api.deepseek.com"
+                },
             enable_thinking = True,
             stream = True,
             multimodality = False
         ),
-        formatter = DashScopeChatFormatter(),
+        formatter = OpenAIChatFormatter(),
         toolkit=toolkit
     )
     

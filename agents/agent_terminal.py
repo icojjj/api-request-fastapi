@@ -13,6 +13,7 @@ from agentscope.tool import (
     execute_python_code,
     view_text_file,
 )
+from agentscope.message import Msg
 
 async def main() -> None:
     """first prototipe"""
@@ -52,6 +53,6 @@ async def main() -> None:
         msg = await user(msg)
         if msg.get_text_content() == "exit":
             break
-        msg = await agent(msg)
+        msg = await Msg(name="User", content=agent.msg, role="user")
         
 asyncio.run(main())
