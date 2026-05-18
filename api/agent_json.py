@@ -22,6 +22,10 @@ class AgentCreator(BaseModel):
     agent_tools: list
     knowledge: list
     msg: str
+    user_id: int
+    memory : dict
+    
+memorys = {}
         
 agent_json=FastAPI()
 @agent_json.post("/agents")
